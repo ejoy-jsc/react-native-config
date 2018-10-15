@@ -26,10 +26,10 @@ def loadDotEnv(flavor = getCurrentFlavor()) {
 
     if (System.env['ENVFILE']) {
         envFile = System.env['ENVFILE']
+         println("==> env from System.env : $envFile  $flavor")
     } else if (System.getProperty('ENVFILE')) {
         envFile = System.getProperty('ENVFILE')
-    } else if (project.hasProperty("defaultEnvFile")) {
-        envFile = project.defaultEnvFile
+        println("==> env from System.getProperty : $envFile  $flavor")
     } else if (project.hasProperty("envConfigFiles")) {
         // use startsWith because sometimes the task is "generateDebugSources", so we want to match "debug"
         project.ext.envConfigFiles.any { pair ->
@@ -38,6 +38,10 @@ def loadDotEnv(flavor = getCurrentFlavor()) {
                 return true
             }
         }
+        println("==> env from envConfigFiles : $envFile  $flavor")
+    } else if (project.hasProperty("defaultEnvFile")) {
+        envFile = project.defaultEnvFile
+        println("==> env from defaultEnvFile : $envFile  $flavor")
     }
 
     def env = [:]
